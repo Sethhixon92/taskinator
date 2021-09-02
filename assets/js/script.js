@@ -1,5 +1,6 @@
 var formEl = document.querySelector("#task-form");
 var tasksToDoEl = document.querySelector("#tasks-to-do");
+var taskIdCounter = 0;
 
 var taskFormHandler = function(event) {
      event.preventDefault();
@@ -20,11 +21,46 @@ var taskFormHandler = function(event) {
      // send it as an arguement to createTaskEl
      createTaskEl(taskDataObj);
     };
+    var createTaskAction = function(taskId) {
+         var actionContainerEl = document.createElement("div");
+         actionContainerEl.className = "task-actions";
+         // create a edit button
+         var editButtonEl = document.createElement("button");
+         editButtonEl.textContent = "Edit";
+         editButtonEl.className = "btn edit-btn";
+         editButtonEl.setAttribute("data-rtask-id", taskId);
+
+         actionContainerEl.appendChild(editButtonEl);
+
+         //create delete button
+         var deleteButtonEl = document.createElement("button");
+         deleteButtonEl.textContent = "Delete";
+         deleteButtonEl.className = "btn delete-btn";
+         deleteButtonEl.setAttribute("data-task-id", taskId);
+
+         actionContainerEl.appendChild(deleteButtonEl);
+         
+         return actionContainerEl;
+    }
+    
 
      var createTaskEl = function(taskDataObj) {
      // create list item
      var listItemEl = document.createElement("li");
      listItemEl.className = "task-item";
+
+     //add task id as a custom attribute
+     listItemEl.setAttribute("data-task-id", taskIdCounter);
+
+     var taskInfoEl = document.createElement("div");
+     taskInfoEl.className = "task-info";
+     taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + "</span>";
+     listItemEl.appendChild(taskInfoEl);
+
+     tasksToDoEl.appendChild(listItemEl);
+
+     //increase task counter for next unique id
+     taskIdCounter++;
      
      //create div to hold  task info and add to list item
      var taskInfoEl = document.createElement("div");
